@@ -18,6 +18,7 @@ internal class DefaultJsonCodec<Element : IdHolder<ElementId, IdValue>, ElementI
 ) : RedisCodec<ElementId, Element> {
     private val keySerializer by lazy { idValueClass.serializer() }
     private val valueSerializer by lazy { elementClass.serializer() }
+    // TODO kotlin-format-extension
     private val keyPrefix by lazy {
         val className = elementClass.simpleName ?: return@lazy ""
         val builder = StringBuilder()
