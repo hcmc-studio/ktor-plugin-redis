@@ -48,6 +48,7 @@ publishing {
 }
 
 dependencies {
+    implementation("com.github.hcmc-studio:kotlin-format-extension:$hcmc_extension_version")
     implementation("com.github.hcmc-studio:kotlin-protocol-extension:$hcmc_extension_version")
     implementation("com.github.hcmc-studio:ktor-plugin-content-negotiation:$hcmc_extension_version")
     implementation("com.github.hcmc-studio:ktor-serialization-extension:$hcmc_extension_version")

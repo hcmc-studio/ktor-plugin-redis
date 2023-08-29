@@ -4,6 +4,7 @@ import io.lettuce.core.codec.RedisCodec
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
+import studio.hcmc.kotlin.format.CacheKeyPrefix
 import studio.hcmc.kotlin.protocol.Id
 import studio.hcmc.kotlin.protocol.IdHolder
 import java.nio.ByteBuffer
@@ -18,23 +19,7 @@ internal class DefaultJsonCodec<Element : IdHolder<ElementId, IdValue>, ElementI
 ) : RedisCodec<ElementId, Element> {
     private val keySerializer by lazy { idValueClass.serializer() }
     private val valueSerializer by lazy { elementClass.serializer() }
-    // TODO kotlin-format-extension
-    private val keyPrefix by lazy {
-        val className = elementClass.simpleName ?: return@lazy ""
-        val builder = StringBuilder()
-        for ((index, c) in className.removeSuffix("Id").withIndex()) {
-            if (c.isUpperCase()) {
-                if (index > 0) {
-                    builder.append(':')
-                }
-                builder.append(c.lowercaseChar())
-            } else {
-                builder.append(c)
-            }
-        }
-
-        builder.append(':').toString()
-    }
+    private val keyPrefix by lazy { CacheKeyPrefix.convert(elementClass) }
 
     override fun decodeKey(bytes: ByteBuffer): ElementId {
         val idString = String(bytes.array()).split(":").last()
